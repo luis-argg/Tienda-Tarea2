@@ -37,11 +37,8 @@ public class ProductoServiceImpl implements ProductoService{
     public Producto actualizar(Integer id, Producto producto) {
 
         Producto existente = obtenerPorId(id);
-
-        existente.setCategoria(producto.getCategoria());
         existente.setNombreProducto(producto.getNombreProducto());
         existente.setStock(producto.getStock());
-        existente.setCategoria(producto.getCategoria());
 
         return productoRepository.save(producto);
     }

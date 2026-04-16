@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ import java.util.List;
 
 @Controller
 @Validated
-@RequestMapping("/tiendafront/usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -26,6 +25,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    //listar registros
     @GetMapping
     public String lista(Model model){
         model.addAttribute("usuarios", usuarioService.listar());
@@ -37,6 +37,7 @@ public class UsuarioController {
         return usuarioService.obtenerPorId(id);
     }
 
+    //abrir form
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuario", new Usuario());

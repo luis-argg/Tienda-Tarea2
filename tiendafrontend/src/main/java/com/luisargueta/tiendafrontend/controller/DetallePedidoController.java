@@ -2,13 +2,16 @@ package com.luisargueta.tiendafrontend.controller;
 
 import com.luisargueta.tiendafrontend.entity.DetallePedido;
 import com.luisargueta.tiendafrontend.service.DetallePedidoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/tiendafront/detalle/pedido")
+@RequestMapping("/detalle-pedido")
 public class DetallePedidoController {
 
     private final DetallePedidoService detallePedidoService;
@@ -31,6 +34,26 @@ public class DetallePedidoController {
     @ResponseStatus(HttpStatus.CREATED)
     public DetallePedido crear(@RequestBody DetallePedido detallePedido){
         return detallePedidoService.crear(detallePedido);
+    }
+
+    @GetMapping("/nuevo")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("detallepedido", new DetallePedido());
+        model.addAttribute("modeEdicion", false);
+        return "detallepedido-formulario";
+    }
+
+    @PostMapping("/guardar")
+    public String crear(@Valid @ModelAttribute("detallepedido") DetallePedido detallePedido, Model model, BindingResult result) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("modeEdicion", false);
+            return "detallepedido-formulario";
+        }
+
+        detallePedidoService.crear(detallePedido);
+
+        return "redirect:/detalle-pedido";
     }
 
     @DeleteMapping("/{id}")
