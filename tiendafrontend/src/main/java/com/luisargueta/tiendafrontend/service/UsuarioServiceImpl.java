@@ -3,17 +3,25 @@ package com.luisargueta.tiendafrontend.service;
 import com.luisargueta.tiendafrontend.entity.Usuario;
 import com.luisargueta.tiendafrontend.exception.ResourceNotFoundException;
 import com.luisargueta.tiendafrontend.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UsuarioServiceImpl  implements  UsuarioService{
+public class UsuarioServiceImpl  implements  UsuarioService, UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    @Autowired
+    private  UsuarioRepository userLogueado;
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioRepository userLogueado) {
         this.usuarioRepository = usuarioRepository;
+        this.userLogueado = userLogueado;
     }
 
     @Override
@@ -56,5 +64,20 @@ public class UsuarioServiceImpl  implements  UsuarioService{
         usuarioRepository.deleteById(id);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDetails usuarioLog = usuarioRepository.findByUsername(username);
+
+        if (usuarioLog== null){
+                throw UsernameNotFoundException.fromUsername("El usuario no se ha encontrado " + username);
+
+        }
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(usuarioLog.getUsername())
+                .password(usuarioLog.getPassword())
+                .roles("USER")
+                .build();
     }
+
+}
 

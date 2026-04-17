@@ -6,51 +6,68 @@
 </head>
 <body>
 
-<h1>Gestión de Usuarios</h1>
+<div class="main-container">
+    <h1>Gestión de Usuarios</h1>
 
-<button onclick="abrirModal()">Nuevo Usuario</button>
+    <div class="tabla-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Edad</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${usuarios}">
+                <td th:text="${u.idUsuario}"></td>
+                <td th:text="${u.nombreUsuario}"></td>
+                <td th:text="${u.apellidoUsuario}"></td>
+                <td th:text="${u.edadUsuario}"></td>
+                <td>
+                    <button class="btn-editar-tabla"
+                            type="button"
+                            th:data-id="${u.idUsuario}"
+                            th:data-nombre="${u.nombreUsuario}"
+                            th:data-apellido="${u.apellidoUsuario}"
+                            th:data-edad="${u.edadUsuario}"
+                            onclick="prepararEdicion(this)">
+                        Editar
+                    </button>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Edad</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="u : ${usuarios}">
-            <td th:text="${u.idUsuario}"></td>
-            <td th:text="${u.nombreUsuario}"></td>
-            <td th:text="${u.apellidoUsuario}"></td>
-            <td th:text="${u.edadUsuario}"></td>
-            <td>
-                <button th:onclick="|eliminar(${u.idUsuario})|">Eliminar</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    <button class="btn-eliminar-tabla" th:onclick="'eliminar(' + ${u.idUsuario} + ')'">Eliminar</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-<!-- MODAL -->
+    <div class="acciones-container">
+        <button class="btn-secundario" onclick="actualizarPagina()">Actualizar</button>
+        <button class="btn-principal" onclick="abrirNuevoUsuario()">Nuevo Usuario</button>
+    </div>
+</div>
+
 <div id="modal" class="modal">
     <div class="modal-contenido">
         <span class="cerrar" onclick="cerrarModal()">&times;</span>
 
-        <h2>Nuevo Usuario</h2>
+        <h2 id="modal-titulo">Nuevo Usuario</h2>
 
-        <form th:action="@{/usuarios/guardar}" method="post" th:object="${usuario}">
-            <input type="text" th:field="*{nombreUsuario}" placeholder="Nombre" required>
-            <input type="text" th:field="*{apellidoUsuario}" placeholder="Apellido" required>
-            <input type="number" th:field="*{edadUsuario}" placeholder="Edad" required>
+        <form th:action="@{/usuarios/guardar}" method="post" th:object="${usuario}" id="usuarioForm">
+            <input type="hidden" id="idUsuario" th:field="*{idUsuario}">
 
-            <button type="submit">Guardar</button>
+            <input type="text" id="nombreUsuario" th:field="*{nombreUsuario}" placeholder="Nombre" required>
+            <input type="text" id="apellidoUsuario" th:field="*{apellidoUsuario}" placeholder="Apellido" required>
+            <input type="number" id="edadUsuario" th:field="*{edadUsuario}" placeholder="Edad" required>
+
+            <button type="submit" class="btn-principal">Guardar</button>
         </form>
     </div>
 </div>
 
 <script th:src="@{/js/script.js}"></script>
-
 </body>
 </html>

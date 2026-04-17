@@ -23,7 +23,6 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    //listar registros
     @GetMapping
     public String lista(Model model){
         model.addAttribute("usuarios", usuarioService.listar());
@@ -31,23 +30,11 @@ public class UsuarioController {
         return "usuarios";
     }
 
-    @GetMapping("/{id}")
-    public Usuario obtenerPorId(@PathVariable Integer id){
-        return usuarioService.obtenerPorId(id);
-    }
-
-    //abrir form
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("modeEdicion", false);
         return "usuario-formulario";
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Usuario crear(@RequestBody Usuario usuario){
-        return usuarioService.crear(usuario);
     }
 
     @PostMapping("/guardar")
@@ -61,6 +48,25 @@ public class UsuarioController {
         usuarioService.crear(usuario);
         return "redirect:/usuarios";
     }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable Integer id) {
+        usuarioService.eliminar(id);
+        return "redirect:/usuarios";
+    }
+
+    @GetMapping("/{id}")
+    public Usuario obtenerPorId(@PathVariable Integer id){
+        return usuarioService.obtenerPorId(id);
+    }
+
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Usuario crear(@RequestBody Usuario usuario){
+        return usuarioService.crear(usuario);
+    }
+
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id){

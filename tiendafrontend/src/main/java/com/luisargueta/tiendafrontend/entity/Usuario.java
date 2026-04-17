@@ -9,7 +9,9 @@ import jakarta.validation.constraints.*;
         "idUsuario",
         "nombreUsuario",
         "apellidoUsuario",
-        "edadUsuario"
+        "edadUsuario",
+        "username",
+        "password"
 })
 
 @Entity
@@ -38,6 +40,32 @@ public class Usuario {
     @Column(name = "edad_usuario", nullable = false)
     private Integer edadUsuario;
 
+    @NotNull(message = "El nombre de usuario no puede ir vacio")
+    @Min(value = 1, message = "El nombre de usuario debe ser mayor a 1.")
+    @Column(name = "user_name", nullable = false)
+    private String username;
+
+    @NotNull(message = "La contraseña no puede ir vacia")
+    @Min(value = 5, message = "La contraseña debe de ser mayor a 5 caracteres")
+    @Max(value = 100, message = "La contreseña debe ser menor a 100")
+    private String password;
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Integer getIdUsuario() {
         return idUsuario;
