@@ -12,8 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.List;
-
 @Controller
 @Validated
 @RequestMapping("/usuarios")
@@ -29,6 +27,7 @@ public class UsuarioController {
     @GetMapping
     public String lista(Model model){
         model.addAttribute("usuarios", usuarioService.listar());
+        model.addAttribute("usuario", new Usuario());
         return "usuarios";
     }
 
