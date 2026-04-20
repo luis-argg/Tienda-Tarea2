@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Panel de Control - Tienda</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
+
+<div class="login-container" style="width: 500px;"> <h2>Menú Principal</h2>
+    <p class="subtitle" th:text="'Bienvenido al sistema, ' + ${#authentication.name}"></p>
+
+    <div class="form-group">
+        <label style="text-align: center; margin-bottom: 20px;">Gestión de Módulos</label>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+
+            <a th:href="@{/usuarios}" style="text-decoration: none;">
+                <button type="button" class="btn-principal">Gestionar Usuarios</button>
+            </a>
+
+            <a th:href="@{/productos}" style="text-decoration: none;">
+                <button type="button" class="btn-principal">Gestionar Productos</button>
+            </a>
+
+            <a th:href="@{/categorias}" style="text-decoration: none;">
+                <button type="button" class="btn-principal">Gestionar Categorías</button>
+            </a>
+
+            <a th:href="@{/pedidos}" style="text-decoration: none;">
+                <button type="button" class="btn-principal">Gestionar Pedidos</button>
+            </a>
+
+            <a th:href="@{/detallepedidos}" style="text-decoration: none;">
+                <button type="button" class="btn-principal">Gestionar Detalle de los pedidos</button>
+            </a>
+
+        </div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #ddd; margin: 25px 0;">
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" style="background-color: #dc3545; border-top: none;">
+            Cerrar Sesión
+        </button>
+    </form>
+</div>
 
 </body>
 </html>

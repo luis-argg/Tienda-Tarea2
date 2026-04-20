@@ -4,6 +4,7 @@ package com.luisargueta.tiendafrontend.controller;
 import com.luisargueta.tiendafrontend.entity.Usuario;
 import com.luisargueta.tiendafrontend.service.UsuarioService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +78,5 @@ public class UsuarioController {
     public Usuario actualizar(@PathVariable Integer id, @RequestBody Usuario usuario){
         return usuarioService.actualizar(id, usuario);
     }
-
 
 }

@@ -16,12 +16,9 @@ public class UsuarioServiceImpl  implements  UsuarioService, UserDetailsService 
 
     private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private  UsuarioRepository userLogueado;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioRepository userLogueado) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository){
         this.usuarioRepository = usuarioRepository;
-        this.userLogueado = userLogueado;
     }
 
     @Override

@@ -1,0 +1,167 @@
+:root {
+    --primary: #1a73e8; /* Azul corporativo para consistencia */
+    --accent: #27ae60;
+    --bg: #e9ecef;
+    --white: #ffffff;
+    --shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Cambiado para que el H1 esté arriba */
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #2c3e50;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+/* CONTENEDOR PRINCIPAL - Ahora más ancho */
+.main-container {
+    width: 100%;
+    max-width: 1100px; /* Aumentado para que no sea tan pequeño */
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border-top: 6px solid var(--primary);
+}
+
+.tabla-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Eliminado el max-height de 400px para que la tabla respire */
+    margin-bottom: 80px; /* Espacio para los botones flotantes */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px; /* Más espacio en encabezados */
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 12px 15px; /* Celda más espaciosa */
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 1rem; /* Letra tamaño normal */
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f1f4f8; /* Efecto al pasar el mouse */
+}
+
+/* BOTONES DE LA TABLA */
+.btn-editar-tabla, .btn-eliminar-tabla {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    transition: transform 0.2s;
+}
+
+.btn-editar-tabla {
+    background-color: #3498db;
+    color: white;
+    margin-right: 8px;
+}
+
+.btn-eliminar-tabla {
+    background: #ff4d4d;
+    color: white;
+}
+
+.btn-editar-tabla:hover, .btn-eliminar-tabla:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* BOTONES FLOTANTES */
+.acciones-container {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+}
+
+.btn-principal, .btn-secundario {
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+
+.btn-principal { background-color: var(--accent); }
+.btn-secundario { background-color: #2c3e50; }
+
+.btn-principal:hover { background-color: #219150; transform: translateY(-3px); }
+
+/* MODAL MEJORADO */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+}
+
+.modal-contenido {
+    background: white;
+    width: 400px; /* Un poco más ancho el formulario */
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-contenido h2 {
+    color: var(--primary);
+    margin-top: 0;
+}
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: block;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 8px rgba(26,115,232,0.2);
+}

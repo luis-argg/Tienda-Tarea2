@@ -2,69 +2,45 @@ package com.luisargueta.tiendafrontend.controller;
 
 import com.luisargueta.tiendafrontend.entity.Pedido;
 import com.luisargueta.tiendafrontend.service.PedidoService;
+import com.luisargueta.tiendafrontend.service.UsuarioService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/pedido")
+@Controller
+@RequestMapping("/pedidos")
 public class PedidoController {
 
     private final PedidoService pedidoService;
+    private final UsuarioService usuarioService;
 
-    public PedidoController(PedidoService pedidoService) {
+    public PedidoController(PedidoService pedidoService, UsuarioService usuarioService) {
         this.pedidoService = pedidoService;
+        this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/get")
-    public List<Pedido> listar(){
-        return pedidoService.listar();
-    }
-
-    @GetMapping("/get/{id}")
-    public Pedido obtenerPorId(@PathVariable Integer id){
-        return pedidoService.obtenerPorId(id);
-    }
-
-    @PostMapping("/post")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Pedido crear(@RequestBody Pedido pedido){
-        return pedidoService.crear(pedido);
-    }
-
-    @GetMapping("/nuevo")
-    public String mostrarFormulario(Model model) {
+    @GetMapping
+    public String listar(Model model) {
+        model.addAttribute("pedidos", pedidoService.listar());
+        model.addAttribute("usuarios", usuarioService.listar());
         model.addAttribute("pedido", new Pedido());
-        model.addAttribute("modeEdicion", false);
-        return "pedido-formulario";
+        return "pedidos";
     }
 
     @PostMapping("/guardar")
-    public String crear(@Valid @ModelAttribute("pedido") Pedido pedido, Model model, BindingResult result) {
-
+    public String guardar(@Valid @ModelAttribute("pedido") Pedido pedido, BindingResult result) {
         if (result.hasErrors()) {
-            model.addAttribute("modeEdicion", false);
-            return "pedido-formulario";
+            return "redirect:/pedidos";
         }
-
         pedidoService.crear(pedido);
-
-        return "redirect:/pedido";
+        return "redirect:/pedidos";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void eliminar(@PathVariable Integer id){
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
         pedidoService.eliminar(id);
+        return "redirect:/pedidos";
     }
-
-    @PutMapping("/put/{id}")
-    public Pedido actualizar(@PathVariable Integer id, @RequestBody Pedido pedido){
-        return pedidoService.actualizar(id, pedido);
-    }
-
 }

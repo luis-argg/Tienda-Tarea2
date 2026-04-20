@@ -69,12 +69,15 @@ INSERT INTO categoria (nombre_categoria, descripcion_categoria) VALUES
 ('Ferretería', 'Herramientas y materiales de construcción');
 
 CREATE TABLE producto (
-    id_producto INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_producto VARCHAR(255) NOT NULL,
-    precio_producto DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL,
-    id_categoria INT,
-    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
+                          id_producto INT AUTO_INCREMENT PRIMARY KEY,
+                          nombre_producto VARCHAR(255) NOT NULL,
+                          precio_producto DECIMAL(10,2) NOT NULL,
+                          stock INT NOT NULL,
+                          id_categoria INT,
+                          CONSTRAINT fk_producto_categoria
+                              FOREIGN KEY (id_categoria)
+                                  REFERENCES categoria(id_categoria)
+                                  ON DELETE CASCADE
 );
 
 -- Insertando registros
@@ -121,11 +124,14 @@ INSERT INTO producto (nombre_producto, precio_producto, stock, id_categoria) VAL
 ('Destornillador', 7.99, 40, 20);
 
 CREATE TABLE pedido (
-    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_pedido VARCHAR(255) NOT NULL,
-    total_pedido DOUBLE NOT NULL,
-    id_usuario INT,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+     fecha_pedido VARCHAR(255) NOT NULL,
+     total_pedido DOUBLE NOT NULL,
+     id_usuario INT,
+     CONSTRAINT fk_pedido_usuario
+     FOREIGN KEY (id_usuario)
+     REFERENCES usuario(id_usuario)
+     ON DELETE CASCADE
 );
 
 -- Insertando registros
@@ -162,8 +168,14 @@ CREATE TABLE detalle_pedido (
     precio_unitario DOUBLE NOT NULL,
     id_pedido INT,
     id_producto INT,
-    FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido),
-    FOREIGN KEY (id_producto) REFERENCES producto(id_producto)
+    CONSTRAINT fk_detalle_pedido
+    FOREIGN KEY (id_pedido)
+    REFERENCES pedido(id_pedido)
+    ON DELETE CASCADE,
+    CONSTRAINT fk_detalle_producto
+        FOREIGN KEY (id_producto)
+    REFERENCES producto(id_producto)
+    ON DELETE CASCADE
 );
 
 -- Insertando registros

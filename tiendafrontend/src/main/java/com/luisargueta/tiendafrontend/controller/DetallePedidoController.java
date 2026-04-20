@@ -2,69 +2,51 @@ package com.luisargueta.tiendafrontend.controller;
 
 import com.luisargueta.tiendafrontend.entity.DetallePedido;
 import com.luisargueta.tiendafrontend.service.DetallePedidoService;
+import com.luisargueta.tiendafrontend.service.PedidoService;
+import com.luisargueta.tiendafrontend.service.ProductoService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/detalle-pedido")
+@Controller
+@RequestMapping("/detallepedidos")
 public class DetallePedidoController {
 
     private final DetallePedidoService detallePedidoService;
+    private final PedidoService pedidoService;
+    private final ProductoService productoService;
 
-    public DetallePedidoController(DetallePedidoService detallePedidoService) {
+    public DetallePedidoController(DetallePedidoService detallePedidoService,
+                                   PedidoService pedidoService,
+                                   ProductoService productoService) {
         this.detallePedidoService = detallePedidoService;
+        this.pedidoService = pedidoService;
+        this.productoService = productoService;
     }
 
     @GetMapping
-    public List<DetallePedido> listar(){
-        return detallePedidoService.listar();
-    }
-
-    @GetMapping("/{id}")
-    public DetallePedido obtenerPorId(@PathVariable Integer id){
-        return detallePedidoService.obtenerPorId(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public DetallePedido crear(@RequestBody DetallePedido detallePedido){
-        return detallePedidoService.crear(detallePedido);
-    }
-
-    @GetMapping("/nuevo")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("detallepedido", new DetallePedido());
-        model.addAttribute("modeEdicion", false);
-        return "detallepedido-formulario";
+    public String listar(Model model) {
+        model.addAttribute("detallepedidos", detallePedidoService.listar());
+        model.addAttribute("pedidos", pedidoService.listar());
+        model.addAttribute("productos", productoService.listar());
+        model.addAttribute("detallePedido", new DetallePedido());
+        return "detallepedidos";
     }
 
     @PostMapping("/guardar")
-    public String crear(@Valid @ModelAttribute("detallepedido") DetallePedido detallePedido, Model model, BindingResult result) {
-
+    public String guardar(@Valid @ModelAttribute("detallePedido") DetallePedido detallePedido, BindingResult result) {
         if (result.hasErrors()) {
-            model.addAttribute("modeEdicion", false);
-            return "detallepedido-formulario";
+            return "redirect:/detallepedidos";
         }
-
         detallePedidoService.crear(detallePedido);
-
-        return "redirect:/detalle-pedido";
+        return "redirect:/detallepedidos";
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id){
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
         detallePedidoService.eliminar(id);
+        return "redirect:/detallepedidos";
     }
-
-    @PutMapping("/{id}")
-    public DetallePedido actualizar(@PathVariable Integer id, @RequestBody DetallePedido detallePedido){
-        return detallePedidoService.actualizar(id, detallePedido);
-    }
-
-
 }

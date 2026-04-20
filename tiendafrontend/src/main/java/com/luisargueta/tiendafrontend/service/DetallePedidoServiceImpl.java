@@ -43,7 +43,7 @@ public class DetallePedidoServiceImpl implements  DetallePedidoService{
         existente.setCantidad(detallePedido.getCantidad());
         existente.setPrecioUnitario(detallePedido.getPrecioUnitario());
 
-        return detallePedidoRepository.save(detallePedido);    }
+        return detallePedidoRepository.save(existente);    }
 
     @Override
     public void eliminar(Integer id) {

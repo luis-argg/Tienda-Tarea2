@@ -3,15 +3,13 @@ package com.luisargueta.tiendafrontend.controller;
 import com.luisargueta.tiendafrontend.entity.Categoria;
 import com.luisargueta.tiendafrontend.service.CategoriaService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/categoria")
+@Controller
+@RequestMapping("/categorias")
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
@@ -21,48 +19,24 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public List<Categoria> listar(){
-        return categoriaService.listar();
-    }
-
-    @GetMapping("/{id}")
-    public Categoria obtenerPorId(@PathVariable Integer id){
-        return categoriaService.obtenerPorId(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Categoria crear(@RequestBody Categoria categoria){
-        return categoriaService.crear(categoria);
-    }
-
-    @GetMapping("/nuevo")
-    public String mostrarFormulario(Model model) {
+    public String listar(Model model) {
+        model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("categoria", new Categoria());
-        model.addAttribute("modeEdicion", false);
-        return "categoria-formulario";
+        return "categorias";
     }
 
     @PostMapping("/guardar")
-    public String crear(@Valid @ModelAttribute("categoria") Categoria categoria, Model model, BindingResult result) {
-
+    public String guardar(@Valid @ModelAttribute("categoria") Categoria categoria, BindingResult result) {
         if (result.hasErrors()) {
-            model.addAttribute("modeEdicion", false);
-            return "categoria-formulario";
+            return "redirect:/categorias";
         }
-
         categoriaService.crear(categoria);
-
-        return "redirect:/categoria";
+        return "redirect:/categorias";
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id){
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
         categoriaService.eliminar(id);
-    }
-
-    @PutMapping("/{id}")
-    public Categoria actualizar(@PathVariable Integer id, @RequestBody Categoria categoria){
-        return categoriaService.actualizar(id, categoria);
+        return "redirect:/categorias";
     }
 }

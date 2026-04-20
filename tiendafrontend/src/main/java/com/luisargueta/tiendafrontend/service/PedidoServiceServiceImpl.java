@@ -40,7 +40,7 @@ public class PedidoServiceServiceImpl implements PedidoService{
         existente.setFechaPedido(pedido.getFechaPedido());
         existente.setTotalPedido(pedido.getTotalPedido());
 
-        return pedidoRepository.save(pedido);
+        return pedidoRepository.save(existente);
     }
 
     @Override

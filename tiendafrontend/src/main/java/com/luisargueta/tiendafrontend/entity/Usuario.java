@@ -40,14 +40,14 @@ public class Usuario {
     @Column(name = "edad_usuario", nullable = false)
     private Integer edadUsuario;
 
-    @NotNull(message = "El nombre de usuario no puede ir vacio")
-    @Min(value = 1, message = "El nombre de usuario debe ser mayor a 1.")
-    @Column(name = "user_name", nullable = false)
+    @NotBlank(message = "El nombre de usuario no puede ir vacio")
+    @Size(min = 2, message = "El nombre de usuario debe ser mayor a 1.")
+    @Column(name = "user_name", updatable = false)
     private String username;
 
-    @NotNull(message = "La contraseña no puede ir vacia")
-    @Min(value = 5, message = "La contraseña debe de ser mayor a 5 caracteres")
-    @Max(value = 100, message = "La contreseña debe ser menor a 100")
+    @NotBlank(message = "La contraseña no puede ir vacia")
+    @Size(min = 6, max = 100, message = "La contraseña debe tener entre 6 y 100 caracteres")
+    @Column(name = "password", updatable = false)
     private String password;
 
 

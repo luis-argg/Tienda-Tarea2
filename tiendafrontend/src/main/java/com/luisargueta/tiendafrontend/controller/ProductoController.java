@@ -2,69 +2,51 @@ package com.luisargueta.tiendafrontend.controller;
 
 import com.luisargueta.tiendafrontend.entity.Producto;
 import com.luisargueta.tiendafrontend.service.ProductoService;
+import com.luisargueta.tiendafrontend.service.CategoriaService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/producto")
+@Controller
+@RequestMapping("/productos")
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final CategoriaService categoriaService;
 
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService, CategoriaService categoriaService) {
         this.productoService = productoService;
+        this.categoriaService = categoriaService;
     }
 
-    @GetMapping("/get")
-    public List<Producto> listar(){
-        return productoService.listar();
-    }
-
-    @GetMapping("/get/{id}")
-    public Producto obtenerPorId(@PathVariable Integer id){
-        return productoService.obtenerPorId(id);
-    }
-
-    @PostMapping("/post")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Producto crear(@RequestBody Producto producto){
-        return productoService.crear(producto);
+    @GetMapping
+    public String listar(Model model) {
+        model.addAttribute("productos", productoService.listar());
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("categorias", categoriaService.listar());
+        return "productos";
     }
 
     @PostMapping("/guardar")
-    public String crear(@Valid @ModelAttribute("producto") Producto producto, Model model, BindingResult result) {
+    public String guardar(@Valid @ModelAttribute("producto") Producto producto,
+                          BindingResult result,
+                          Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute("modeEdicion", false);
-            return "usuario-formulario";
+            model.addAttribute("productos", productoService.listar());
+            model.addAttribute("categorias", categoriaService.listar());
+            return "productos";
         }
 
         productoService.crear(producto);
-
-        return "redirect:/producto";
+        return "redirect:/productos";
     }
 
-    @GetMapping("/nuevo")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("modeEdicion", false);
-        return "producto-formulario";
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void eliminar(@PathVariable Integer id){
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
         productoService.eliminar(id);
+        return "redirect:/productos";
     }
-
-    @PutMapping("/put/{id}")
-    public Producto actualizar(@PathVariable Integer id, @RequestBody Producto producto){
-        return productoService.actualizar(id, producto);
-    }
-
 }

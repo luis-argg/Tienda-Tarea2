@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>CRUD Usuarios</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/cruds.css}">
 </head>
 <body>
 
 <div class="main-container">
-    <h1>Gestión de Usuarios</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div style="width: 150px;"></div>
+
+        <h1 style="margin: 0; flex-grow: 1; text-align: center;">GESTIÓN DE USUARIOS</h1>
+
+        <div style="width: 150px; text-align: right;">
+            <a th:href="@{/home}" style="text-decoration: none;">
+                <button type="button" class="btn-principal"
+                        style="width: auto; padding: 8px 15px; font-size: 13px; background-color: #1a73e8; border-radius: 20px;">
+                    ← Regresar al Menú
+                </button>
+            </a>
+        </div>
+    </div>
 
     <div class="tabla-wrapper">
         <table>
@@ -33,10 +47,11 @@
                             th:data-nombre="${u.nombreUsuario}"
                             th:data-apellido="${u.apellidoUsuario}"
                             th:data-edad="${u.edadUsuario}"
+                            th:data-username="${u.username}"
+                            th:data-password="${u.password}"
                             onclick="prepararEdicion(this)">
                         Editar
                     </button>
-
                     <button class="btn-eliminar-tabla" th:onclick="'eliminar(' + ${u.idUsuario} + ')'">Eliminar</button>
                 </td>
             </tr>
@@ -53,17 +68,18 @@
 <div id="modal" class="modal">
     <div class="modal-contenido">
         <span class="cerrar" onclick="cerrarModal()">&times;</span>
-
         <h2 id="modal-titulo">Nuevo Usuario</h2>
-
         <form th:action="@{/usuarios/guardar}" method="post" th:object="${usuario}" id="usuarioForm">
             <input type="hidden" id="idUsuario" th:field="*{idUsuario}">
-
+            <input type="hidden" id="username" th:field="*{username}">
+            <input type="hidden" id="password" th:field="*{password}">
+            <label>Nombre:</label>
             <input type="text" id="nombreUsuario" th:field="*{nombreUsuario}" placeholder="Nombre" required>
+            <label>Apellido:</label>
             <input type="text" id="apellidoUsuario" th:field="*{apellidoUsuario}" placeholder="Apellido" required>
+            <label>Edad:</label>
             <input type="number" id="edadUsuario" th:field="*{edadUsuario}" placeholder="Edad" required>
-
-            <button type="submit" class="btn-principal">Guardar</button>
+            <button type="submit" class="btn-principal" style="width: 100%; margin-top: 10px;">Guardar</button>
         </form>
     </div>
 </div>

@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Registro</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
+
+<div class="login-container">
+    <h2>Crear Cuenta</h2>
+    <p class="subtitle">Registrate para acceder al sistema</p>
+
+    <form th:action="@{/auth/registrar}" th:object="${usuario}" method="post">
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+            Por favor, revisa los campos marcados.
+        </div>
+
+        <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" th:field="*{nombreUsuario}" placeholder="Tu nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label>Apellido:</label>
+            <input type="text" th:field="*{apellidoUsuario}" placeholder="Tu apellido" required>
+        </div>
+
+        <div class="form-group">
+            <label>Edad:</label>
+            <input type="number" th:field="*{edadUsuario}" placeholder="Tu edad" required
+                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+        </div>
+
+        <div class="form-group">
+            <label>Nombre de Usuario:</label>
+            <input type="text" th:field="*{username}" placeholder="Ej: luis123" required>
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña:</label>
+            <input type="password" th:field="*{password}" placeholder="********" required>
+        </div>
+
+        <button type="submit">Registrarse</button>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <a th:href="@{/login}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">Ya tenes cuenta? Inicia sesion</a>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
